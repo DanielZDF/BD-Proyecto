@@ -10,7 +10,7 @@ CREATE DATABASE chikkins
 CREATE TABLE public.cliente (
   cedula INTEGER NOT NULL,
   nombre VARCHAR(12),
-  whatsapp VARCHAR(20) CHECK (whatsapp LIKE '+%'),
+  whatsapp VARCHAR(20),
   email VARCHAR(50),
   CONSTRAINT cedula_pkey PRIMARY KEY (cedula)
 );

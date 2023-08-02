@@ -25,12 +25,13 @@ def mostrar_clientes():
 
 @Dir.route("/customers", methods = ["POST"])
 def crear_cliente():
+    cc = M_Clientes.M_Cliente()
     cliente_json = request.get_json()
     if {'cedula','name','email','whatsapp'} <= set(cliente_json):
         Archivo_Valido = Validar.Validar_Cliente(cliente_json)
         if (Archivo_Valido):
-            cc = M_Clientes.M_Cliente()
-            cc.insertar_cliente(cliente_json["cedula"],cliente_json["name"],cliente_json["email"],cliente_json["whatsapp"])
+            cc.insertar_cliente(cliente_json['cedula'] ,cliente_json['name'], cliente_json['email'], cliente_json['whatsapp'])
+            return cliente_json,201
         else:
             print("Datos de JSON no validos.")
             abort(400)
@@ -38,8 +39,22 @@ def crear_cliente():
         print("Error en JSON de entrada")
         abort(400)
 
-#@Dir.route("/customers/<cedula>",methods = ["PUT"])
-#def modificar_cliente(cedula):
+@Dir.route("/customers/<cedula>",methods = ["PUT"])
+def modificar_cliente(cedula):
+    cc = M_Clientes.M_Cliente()
+    cliente_json = request.get_json()
+    if (cc.obtener_cliente(cedula) == None):
+        print("No existe el cliente")
+        abort(404)
+    if {'name','email','whatsapp'} <= set(cliente_json):
+        if(not(Validar.Validar_Cliente(cliente_json))):
+            print("Datos de JSON no validos.")
+            abort(400)
+        cc.modificar_cliente(cedula,dict_cliente["name"],dict_cliente["email"],dict_cliente["whatsapp"])
+        return '', 200
+    else:
+        print("Error en JSON de entrada")
+        abort(400)
 
 #-------------------------------------------------
 # SECCION: Manejo de Ordenes

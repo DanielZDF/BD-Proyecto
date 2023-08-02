@@ -31,7 +31,7 @@ class M_Cliente(Conexion):
 		self.conectar()
 		cursor = self.conexion_activa.cursor()
 		try:
-			cursor.execute("INSERT INTO public.cliente(cedula, nombre, whatsapp, email) VALUES (ced, nom, what, em);"),
+			cursor.execute("INSERT INTO cliente VALUES (%s,%s,%s,%s);",(ced,nom,what,em))
 			self.conexion_activa.commit()
 			cursor.close()
 			self.desconectar()
@@ -39,4 +39,33 @@ class M_Cliente(Conexion):
 		except:
 			cursor.close()
 			self.desconectar()
-			raise Exception("Error al insertar el cliente en la base de datos, verifique que la cedula de un cliente no se repita")     
+			raise Exception("ERROR EN LA INSERCION")
+
+	def obtener_cliente(self,cedula):
+		self.conectar()
+		cursor = self.conexion_activa.cursor()
+		try:
+			cursor.execute("SELECT * FROM cliente WHERE cedula=%s",(cedula))
+			self.conexion_activa.commit()
+			cliente = cursor.fetchone()
+			cursor.close()
+			self.desconectar()
+			return usuario
+		except:
+			cursor.close()
+			self.desconectar()
+			raise Exception("ERROR EN LA QUERY")
+
+	def modificar_cliente(self, ced, nom, em, what):
+		self.conectar()
+		cursor = self.conexion_activa.cursor()
+		try:
+			cursor.execute("UPDATE cliente SET nombre = %s, whatsapp = %s, email = %s WHERE cedula = %s",(nom, what, em, ced))
+			self.conexion_activa.commit()
+			cursor.close()
+			self.desconectar()
+			print("Insercion exitosa.")
+		except:
+			cursor.close()
+			self.desconectar()
+			raise Exception("ERROR EN LA INSERCION")
