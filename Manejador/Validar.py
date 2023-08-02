@@ -8,4 +8,6 @@ def Validar_Cliente(cliente):
 		if not C.isDigit():
 			numero_telefono_valido = False
 			break
-	if (len(cliente['whatsapp']) > 20 and cliente['whatsapp'][:1] == "+" and numero_telefono_valido)
+	if (not(len(cliente['whatsapp']) <= 20 and cliente['whatsapp'][:1] == "+" and numero_telefono_valido)):
+		return False
+	return True

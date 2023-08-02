@@ -29,9 +29,11 @@ def crear_cliente():
     if {'cedula','name','email','whatsapp'} <= set(dict_cliente):
         Archivo_Valido = Validar.Validar_Cliente(cliente_json)
         if (Archivo_Valido):
-
+            cc = M_Clientes.M_Cliente()
+            cc.insertar_cliente(cliente_json["cedula"],cliente_json["name"],cliente_json["email"],cliente_json["whatsapp"])
         else:
-
+            print("Datos de JSON no validos.")
+            abort(400)
     else:
         print("Error en JSON de entrada")
         abort(400)
