@@ -24,6 +24,7 @@ CREATE TABLE public.pedido (
     estado VARCHAR(12),
     fecha VARCHAR,
     metodo_pago VARCHAR(10),
+    screenshot bytea,
     municipio VARCHAR(40),
     ciudad VARCHAR(40),
     remarks VARCHAR(80),
