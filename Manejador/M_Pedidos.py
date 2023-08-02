@@ -22,16 +22,31 @@ class M_Pedido(Conexion):
                 self.desconectar()
                 raise Exception("Error al insertar un pedido en la base de datos")
 
-    def cambiar_estado_pedido(id,estado):
-            self.conectar()
-            cursor = self.conexion_activa.cursor()
-            try: # Trata de insertar un cliente
-                cursor.execute("UPDATE pedido SET estado=%s WHERE id=%s;",[estado,id])
+	def cambiar_estado_pedido(self,id,estado):
+			self.conectar()
+			cursor = self.conexion_activa.cursor()
+			try: # Trata de insertar un cliente
+				cursor.execute("UPDATE pedido SET estado=%s WHERE id=%s;",[estado,id])
+				self.conexion_activa.commit()
+				cursor.close()
+				self.desconectar()
+				print("Insercion exitosa")
+			except:
+				cursor.close()
+				self.desconectar()
+				raise Exception("Error al insertar un pedido en la base de datos")
+
+	def buscar_pedido(self, id):
+           self.conectar()
+           cursor = self.conexion_activa.cursor()
+           try: # Trata de buscar un pedido por id
+                cursor.execute("SELECT * FROM pedido WHERE id = %s;",[id])
                 self.conexion_activa.commit()
+                retornable = cursor.fetchall()
                 cursor.close()
                 self.desconectar()
-                print("Insercion exitosa")
-            except:
+                return retornable
+           except:
                 cursor.close()
                 self.desconectar()
-                raise Exception("Error al insertar un pedido en la base de datos")      
+                raise Exception("Error al buscar un pedido en la base de datos")   

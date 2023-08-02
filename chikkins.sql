@@ -21,7 +21,7 @@ CREATE TABLE public.pedido (
     cant_hamburguesas INTEGER CHECK (cant_hamburguesas >= 0),
     m_delivery NUMERIC(10,2) CHECK (m_delivery >= 0),
     m_total NUMERIC CHECK (m_total >= 0),
-    estado VARCHAR(10),
+    estado VARCHAR(12),
     fecha VARCHAR,
     metodo_pago VARCHAR(10),
     municipio VARCHAR(40),

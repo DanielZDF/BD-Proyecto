@@ -79,17 +79,39 @@ def crear_pedido():
         fecha = datetime.datetime.now()
         estado_d = 'pending'
         conexion = M_Pedidos.M_Pedido()
-        conexion.insertar_pedido(orden_json['municipality'], orden_json['city'], n_hamburguesas, monto_envio, monto_t, orden_json['payment_method'],estado_d,fecha,orden_json['cedula'], orden_json['remarks'])
+        conexion.insertar_pedido(orden_json['municipality'], orden_json['city'], n_hamburguesas, monto_envio, monto_t, orden_json['payment_method'], estado_d, fecha, orden_json['cedula'], orden_json['remarks'])
         return '', 201
     else:
         print("Error en JSON de entrada")
         abort(400)
 
-#@Dir.route("/orders/<id>/status", methods = ["PATCH"])
-#def estado_pedido(id_pedido):
+@Dir.route("/orders/<id>/status", methods = ["PATCH"])
+def estado_pedido(id):
+    orden_json = request.get_json()
+    if(not Validar.validar_estado(orden_json)):
+        print("Datos de JSON no validos.")
+        abort(400)
+    cc = M_Pedidos.M_Pedido()
+    if (cc.buscar_pedido(id) == []):
+        print("No existe el pedido")
+        abort(404)
+    estado = orden_json['status']
+    print(id)
+    print(estado)
+    cc.cambiar_estado_pedido(id,estado)
+    return '', 200
 
-#@Dir.route("/orders/<id>/payment-screenshot", methods = ["POST"])
-#def pedido_screenshot(id_pedido):
+
+@Dir.route("/orders/<id>/payment-screenshot", methods = ["POST"])
+def pedido_screenshot(id_pedido):
+    archivo = request.files['screenshot']
+    bytes_imagen = archivo.read()
+    cc = M_Pedidos.M_Pedido()
+    if (cc.buscar_pedido(id) == []):
+        print("No existe el pedido")
+        abort(404)
+    cc.screenshot(id,bytes_imagen)
+    return '',201
 
 #@Dir.route("/orders")
 #def mostrar_pedidos():

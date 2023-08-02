@@ -54,3 +54,10 @@ def validar_diccionario_pedidos(dict_pd):
     if dict_pd['cedula'] <= 0:
         return False
     return True
+
+def validar_estado(status):
+	s = status['status']
+	if(s == 'pending' or s == 'in_progress' or s == 'dispatched' or s == 'completed'):
+		return True
+	else:
+		return False
