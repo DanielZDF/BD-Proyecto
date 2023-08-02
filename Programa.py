@@ -78,7 +78,7 @@ def crear_pedido():
        monto_t = (n_hamburguesas*5) + monto_envio
        fecha = datetime.datetime.now()
        estado_d = 'pending'
-       conexion = conexion_pedidos.ConexionPedido()
+       conexion = M_Pedidos.M_Pedido()
        conexion.insertar_pedido(orden_json['municipality'], orden_json['city'], n_hamburguesas, monto_envio, monto_t, orden_json['payment_method'],estado_d,fecha,orden_json['cedula'], orden_json['remarks'])
        return '', 201
    else:

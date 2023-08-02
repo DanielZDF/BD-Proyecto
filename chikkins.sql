@@ -21,8 +21,10 @@ CREATE TABLE public.pedido (
     cant_hamburguesas INTEGER CHECK (cant_hamburguesas >= 0),
     m_delivery NUMERIC(10,2) CHECK (m_delivery >= 0),
     m_total NUMERIC CHECK (m_total >= 0),
-    municipio VARCHAR(20),
-    ciudad VARCHAR(20),
+    metodo_pago VARCHAR(10),
+    municipio VARCHAR(40),
+    ciudad VARCHAR(40),
+    remarks VARCHAR(80),
     CONSTRAINT pedido_id_pkey PRIMARY KEY (id),
     CONSTRAINT pedido_cedula_pkey PRIMARY KEY (cedula_cliente),
     CONSTRAINT pedido_cedula_cliente_fkey FOREIGN KEY (cedula_cliente) REFERENCES cliente(cedula)

@@ -33,3 +33,29 @@ def Validar_Modif_Cliente(cliente):
 	return True
 
 #>>>>>>>> VALIDACIONES PARA INPUT DE PEDIDOS
+
+def validar_diccionario_pedidos(dict_pd):
+    try:
+        int(dict_pd['quantity'])
+    except:
+        return False
+    largo_prueba = len(dict_pd['payment_method'])
+    if largo_prueba == 0 or largo_prueba > 10:
+        return False
+    largo_prueba = len(dict_pd['remarks'])
+    if largo_prueba == 0 or largo_prueba > 80:
+        return False
+    largo_prueba = len(dict_pd['city'])
+    if largo_prueba == 0 or largo_prueba > 40:
+        return False
+    largo_prueba = len(dict_pd['municipality'])
+    if largo_prueba == 0 or largo_prueba > 40:
+        return False
+    largo_prueba = len(dict_pd['cedula'])
+    if largo_prueba == 0 or largo_prueba > 12:
+        return False
+    try:
+        int(dict_pd['cedula'])
+    except:
+        return False
+    return True
