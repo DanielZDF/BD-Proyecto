@@ -45,12 +45,12 @@ class M_Cliente(Conexion):
 		self.conectar()
 		cursor = self.conexion_activa.cursor()
 		try:
-			cursor.execute("SELECT * FROM cliente WHERE cedula=%s",(cedula))
+			cursor.execute("SELECT * FROM cliente WHERE cedula=%s",[cedula])
 			self.conexion_activa.commit()
 			cliente = cursor.fetchone()
 			cursor.close()
 			self.desconectar()
-			return usuario
+			return cliente
 		except:
 			cursor.close()
 			self.desconectar()
@@ -60,7 +60,7 @@ class M_Cliente(Conexion):
 		self.conectar()
 		cursor = self.conexion_activa.cursor()
 		try:
-			cursor.execute("UPDATE cliente SET nombre = %s, whatsapp = %s, email = %s WHERE cedula = %s",(nom, what, em, ced))
+			cursor.execute("UPDATE cliente SET nombre = %s, whatsapp = %s, email = %s WHERE cedula = %s",[nom, what, em, ced])
 			self.conexion_activa.commit()
 			cursor.close()
 			self.desconectar()

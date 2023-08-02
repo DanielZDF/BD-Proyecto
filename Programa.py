@@ -47,10 +47,10 @@ def modificar_cliente(cedula):
         print("No existe el cliente")
         abort(404)
     if {'name','email','whatsapp'} <= set(cliente_json):
-        if(not(Validar.Validar_Cliente(cliente_json))):
+        if(not(Validar.Validar_Modif_Cliente(cliente_json))):
             print("Datos de JSON no validos.")
             abort(400)
-        cc.modificar_cliente(cedula,dict_cliente["name"],dict_cliente["email"],dict_cliente["whatsapp"])
+        cc.modificar_cliente(cedula,cliente_json["name"],cliente_json["email"],cliente_json["whatsapp"])
         return '', 200
     else:
         print("Error en JSON de entrada")
