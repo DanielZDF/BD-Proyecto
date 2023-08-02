@@ -1,4 +1,4 @@
-from Manejador import M_Clientes, Validar
+from Manejador import M_Clientes, M_Pedidos, Validar
 from flask import Flask, abort, jsonify, request
 import psycopg2
 import datetime
@@ -65,25 +65,25 @@ def crear_pedido():
     if {'quantity','payment_method','remarks','city','municipality','cedula'} <= set(orden_json):
         cc = M_Clientes.M_Cliente()
         if (cc.obtener_cliente(orden_json['cedula']) == None):
-           print("No existe el cliente")
-           abort(404)
-       if(not Validar.validar_diccionario_pedidos(orden_json)):
+            print("No existe el cliente")
+            abort(404)
+        if(not Validar.validar_diccionario_pedidos(orden_json)):
             print("Datos de JSON no validos.")
             abort(400)
-       if orden_json['municipality'].lower() != 'maneiro':
-           monto_envio = 2.00
-       else:
-           monto_envio = 0
-       n_hamburguesas = int(orden_json['quantity'])
-       monto_t = (n_hamburguesas*5) + monto_envio
-       fecha = datetime.datetime.now()
-       estado_d = 'pending'
-       conexion = M_Pedidos.M_Pedido()
-       conexion.insertar_pedido(orden_json['municipality'], orden_json['city'], n_hamburguesas, monto_envio, monto_t, orden_json['payment_method'],estado_d,fecha,orden_json['cedula'], orden_json['remarks'])
-       return '', 201
-   else:
-       print("Error en JSON de entrada")
-       abort(400)
+        if orden_json['municipality'].lower() != 'maneiro':
+            monto_envio = 2.00
+        else:
+            monto_envio = 0
+        n_hamburguesas = int(orden_json['quantity'])
+        monto_t = (n_hamburguesas*5) + monto_envio
+        fecha = datetime.datetime.now()
+        estado_d = 'pending'
+        conexion = M_Pedidos.M_Pedido()
+        conexion.insertar_pedido(orden_json['municipality'], orden_json['city'], n_hamburguesas, monto_envio, monto_t, orden_json['payment_method'],estado_d,fecha,orden_json['cedula'], orden_json['remarks'])
+        return '', 201
+    else:
+        print("Error en JSON de entrada")
+        abort(400)
 
 #@Dir.route("/orders/<id>/status", methods = ["PATCH"])
 #def estado_pedido(id_pedido):

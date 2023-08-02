@@ -16,16 +16,17 @@ CREATE TABLE public.cliente (
 );
 
 CREATE TABLE public.pedido (
-    id INTEGER NOT NULL,
+    id serial NOT NULL,
     cedula_cliente INTEGER NOT NULL,
     cant_hamburguesas INTEGER CHECK (cant_hamburguesas >= 0),
     m_delivery NUMERIC(10,2) CHECK (m_delivery >= 0),
     m_total NUMERIC CHECK (m_total >= 0),
+    estado VARCHAR(10),
+    fecha VARCHAR,
     metodo_pago VARCHAR(10),
     municipio VARCHAR(40),
     ciudad VARCHAR(40),
     remarks VARCHAR(80),
     CONSTRAINT pedido_id_pkey PRIMARY KEY (id),
-    CONSTRAINT pedido_cedula_pkey PRIMARY KEY (cedula_cliente),
     CONSTRAINT pedido_cedula_cliente_fkey FOREIGN KEY (cedula_cliente) REFERENCES cliente(cedula)
 );

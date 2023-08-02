@@ -51,11 +51,6 @@ def validar_diccionario_pedidos(dict_pd):
     largo_prueba = len(dict_pd['municipality'])
     if largo_prueba == 0 or largo_prueba > 40:
         return False
-    largo_prueba = len(dict_pd['cedula'])
-    if largo_prueba == 0 or largo_prueba > 12:
-        return False
-    try:
-        int(dict_pd['cedula'])
-    except:
+    if dict_pd['cedula'] <= 0:
         return False
     return True
