@@ -1,4 +1,4 @@
-from configuracion import config
+from ConexionBD.configuracion import Config
 import psycopg2
 
 class Conexion:
