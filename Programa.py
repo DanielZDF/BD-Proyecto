@@ -43,3 +43,10 @@ def mostrar_clientes():
 
 #@Dir.route("/orders")
 #def mostrar_pedidos():
+
+def pagina_no_encontrada(error):
+    return "<h1>Error 404<h2><h2>Página no encontrada</h2>"
+
+if __name__=="__main__":
+    Dir.register_error_handler(404,pagina_no_encontrada)
+    Dir.run()
