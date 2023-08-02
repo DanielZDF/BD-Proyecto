@@ -27,14 +27,16 @@ class M_Cliente(Conexion):
 	# -------------------------------------------------------------------
 	# METODO PARA INSERTAR CLIENTES
 	# -------------------------------------------------------------------
-	def insertar_cliente(self, cedula, nombre_completo, email, whatsapp):
-        self.conectar()
-        cursor = self.conexion_activa.cursor()
-        try:
-            cursor.execute("INSERT INTO Cliente VALUES (%s,%s,%s,%s);",(cedula, nombre_completo,email,whatsapp))
-            self.conexion_activa.commit()
-            cursor.close()
-            self.desconectar()
-        except:
-            cursor.close()
-            self.desconectar()    
+	def insertar_cliente(self, ced, nom, em, what):
+		self.conectar()
+		cursor = self.conexion_activa.cursor()
+		try:
+			cursor.execute("INSERT INTO public.cliente(cedula, nombre, whatsapp, email) VALUES (ced, nom, what, em);"),
+			self.conexion_activa.commit()
+			cursor.close()
+			self.desconectar()
+			print("Insercion exitosa.")
+		except:
+			cursor.close()
+			self.desconectar()
+			raise Exception("Error al insertar el cliente en la base de datos, verifique que la cedula de un cliente no se repita")     

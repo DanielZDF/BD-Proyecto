@@ -26,7 +26,7 @@ def mostrar_clientes():
 @Dir.route("/customers", methods = ["POST"])
 def crear_cliente():
     cliente_json = request.get_json()
-    if {'cedula','name','email','whatsapp'} <= set(dict_cliente):
+    if {'cedula','name','email','whatsapp'} <= set(cliente_json):
         Archivo_Valido = Validar.Validar_Cliente(cliente_json)
         if (Archivo_Valido):
             cc = M_Clientes.M_Cliente()

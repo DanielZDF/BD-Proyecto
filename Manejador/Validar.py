@@ -5,7 +5,7 @@ def Validar_Cliente(cliente):
 		return False
 	numero_telefono_valido = True
 	for C in cliente['whatsapp'][1:]:
-		if not C.isDigit():
+		if not C.isdigit():
 			numero_telefono_valido = False
 			break
 	if (not(len(cliente['whatsapp']) <= 20 and cliente['whatsapp'][:1] == "+" and numero_telefono_valido)):
