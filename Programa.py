@@ -90,12 +90,14 @@ def modificar_cliente(cedula):
 
 #>>>>> METODO DE INSERCION DE ORDENES
 #
-#       URL: http://127.0.0.1:5000/<cedula>
-#       METODO: PUT
+#       URL: http://127.0.0.1:5000/orders
+#       METODO: POST
 #
 #       Para este metodo, se pide un JSON, este crea su propia SERIAL una vez se insertan los datos en
 #       la Base de Datos, generada automaticamente por esta. Este SERIAL es unico y no se repite, por lo que
 #       las ordenes se identifican por si mismas
+#
+#       Lastimosamente, no muestra al final todo el contenido de la orden
 #
 @Dir.route("/orders",methods=["POST"])
 def crear_pedido():
@@ -123,6 +125,13 @@ def crear_pedido():
         print("Error en JSON de entrada")
         abort(400)
 
+#>>>>> METODO DE MODIFICACION DE ESTADO DE PEDIDO
+#
+#       URL: http://127.0.0.1:5000/orders/<id>/status
+#       METODO: PATCH
+#
+#       La orden hecha debe existir, la ID de dicho pedido va en la URL
+#
 @Dir.route("/orders/<id>/status", methods = ["PATCH"])
 def estado_pedido(id):
     orden_json = request.get_json()
