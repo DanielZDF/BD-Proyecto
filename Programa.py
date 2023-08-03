@@ -79,7 +79,8 @@ def crear_pedido():
         fecha = datetime.datetime.now()
         estado_d = 'pending'
         conexion = M_Pedidos.M_Pedido()
-        return conexion.insertar_pedido(orden_json['municipality'], orden_json['city'], n_hamburguesas, monto_envio, monto_t, orden_json['payment_method'], estado_d, fecha, orden_json['cedula'], orden_json['remarks']), 201
+        conexion.insertar_pedido(orden_json['municipality'], orden_json['city'], n_hamburguesas, monto_envio, monto_t, orden_json['payment_method'], estado_d, fecha, orden_json['cedula'], orden_json['remarks'])
+        return '', 200
     else:
         print("Error en JSON de entrada")
         abort(400)
@@ -101,7 +102,7 @@ def estado_pedido(id):
     return '', 200
 
 
-@Dir.route("/orders/<id>/payment-screenshot", methods = ["POST"])
+@Dir.route("/orders/<id_pedido>/payment-screenshot", methods = ["POST"])
 def pedido_screenshot(id_pedido):
     archivo = request.files['screenshot']
     bytes_imagen = archivo.read()
@@ -109,11 +110,12 @@ def pedido_screenshot(id_pedido):
     if (cc.buscar_pedido(id) == []):
         print("No existe el pedido")
         abort(404)
-    cc.screenshot(id,bytes_imagen)
+    print(id_pedido)
+    cc.screenshot(id_pedido,bytes_imagen)
     return '',201
 
-#@Dir.route("/orders")
-#def mostrar_pedidos():
+@Dir.route("/orders")
+def mostrar_pedidos():
 
 def pagina_no_encontrada(error):
     return "<h1>Error 404<h2><h2>Página no encontrada</h2>"

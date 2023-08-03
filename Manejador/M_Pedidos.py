@@ -12,11 +12,12 @@ class M_Pedido(Conexion):
             self.conectar()
             cursor = self.conexion_activa.cursor()
             try: # Trata de insertar un cliente
-                cursor.execute("INSERT INTO pedido (municipio, ciudad, cant_hamburguesas, m_delivery, m_total, metodo_pago, estado, fecha, cedula_cliente, remarks) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",[municipio, ciudad, n_hamburg, monto_deliv, monto_t, metodo_p, estado_d, fecha, cedula,remarks])
+                query = cursor.execute("INSERT INTO pedido (municipio, ciudad, cant_hamburguesas, m_delivery, m_total, metodo_pago, estado, fecha, cedula_cliente, remarks) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",[municipio, ciudad, n_hamburg, monto_deliv, monto_t, metodo_p, estado_d, fecha, cedula,remarks])
                 self.conexion_activa.commit()
                 cursor.close()
                 self.desconectar()
                 print("Insercion exitosa")
+                return query
             except:
                 cursor.close()
                 self.desconectar()
@@ -55,7 +56,9 @@ class M_Pedido(Conexion):
 		self.conectar()
 		cursor = self.conexion_activa.cursor()
 		try:
-			cursor.execute("UPDATE pedido SET screenshot = %s WHERE id = %s",(bytes_imagen, id))
+			print(id)
+			print(bytes_imagen)
+			cursor.execute("UPDATE pedido SET screenshot = %s WHERE id = %s",[bytes_imagen, id])
 			self.conexion_activa.commit()
 			cursor.close()
 			self.desconectar()
