@@ -130,7 +130,8 @@ def crear_pedido():
 #       URL: http://127.0.0.1:5000/orders/<id>/status
 #       METODO: PATCH
 #
-#       La orden hecha debe existir, la ID de dicho pedido va en la URL
+#       La orden hecha debe existir, la ID de dicho pedido va en la URL, de esta forma la ID siempre debe ser unica
+#       dado que no se especifica la Cedula de quien hace la orden (requerimiento cumplido anteriormente)
 #
 @Dir.route("/orders/<id>/status", methods = ["PATCH"])
 def estado_pedido(id):
@@ -148,7 +149,18 @@ def estado_pedido(id):
     cc.cambiar_estado_pedido(id,estado)
     return '', 200
 
-
+#>>>>> METODO DE MODIFICACION O INSERCION DE SCREENSHOT
+#
+#       URL: http://127.0.0.1:5000/orders/<id_pedido>/payment-screenshot
+#       METODO: POST
+#
+#       La imagen se pasa como un parametro File desde el programa que maneje las request
+#       debe llamarse "screenshot" especificamente para que este pueda reconocerse. se
+#       transforman a bytes para que sea aceptado por la Base de Datos
+#
+#       ADVERTENCIA: En teoria, deberia aceptarlos, cuando lo intento marca un error, diciendo que
+#       la base de datos no entiende la solicitud
+#
 @Dir.route("/orders/<id_pedido>/payment-screenshot", methods = ["POST"])
 def pedido_screenshot(id_pedido):
     archivo = request.files['screenshot']
@@ -161,6 +173,19 @@ def pedido_screenshot(id_pedido):
     cc.screenshot(id_pedido,bytes_imagen)
     return '',201
 
+#>>>>> METODO DE MOSTRAR PEDIDOS
+#
+#       URL: http://127.0.0.1:5000/orders ?parametros varios
+#       METODO: GET
+#
+#       La idea de este, es tener la capacidad de filtrar los pedidos segun los parametros en la
+#       URL, de haber parametros correctos, los tomará en cuenta para el filtro y creara una 
+#       Query en base a ella
+#
+#       ADVERTENCIA: No logré hacer que funcionara, al inicio funcionaba pero devolvia todas las ordenes
+#       despues dejó de devolver todo y lanzaba error de iteraciones sin objetos. en teoria, eso es porque
+#       al tratar de hacer el output no consiguio nada en la Query
+#
 @Dir.route("/orders", methods = ["GET"])
 def mostrar_pedidos():
     conexion = M_Pedidos.M_Pedido()
