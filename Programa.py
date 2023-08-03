@@ -79,8 +79,7 @@ def crear_pedido():
         fecha = datetime.datetime.now()
         estado_d = 'pending'
         conexion = M_Pedidos.M_Pedido()
-        conexion.insertar_pedido(orden_json['municipality'], orden_json['city'], n_hamburguesas, monto_envio, monto_t, orden_json['payment_method'], estado_d, fecha, orden_json['cedula'], orden_json['remarks'])
-        return '', 201
+        return conexion.insertar_pedido(orden_json['municipality'], orden_json['city'], n_hamburguesas, monto_envio, monto_t, orden_json['payment_method'], estado_d, fecha, orden_json['cedula'], orden_json['remarks']), 201
     else:
         print("Error en JSON de entrada")
         abort(400)

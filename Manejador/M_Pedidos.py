@@ -49,4 +49,18 @@ class M_Pedido(Conexion):
            except:
                 cursor.close()
                 self.desconectar()
-                raise Exception("Error al buscar un pedido en la base de datos")   
+                raise Exception("Error al buscar un pedido en la base de datos")
+
+	def screenshot(self, id, bytes_imagen):
+		self.conectar()
+		cursor = self.conexion_activa.cursor()
+		try:
+			cursor.execute("UPDATE pedido SET screenshot = %s WHERE id = %s",(bytes_imagen, id))
+			self.conexion_activa.commit()
+			cursor.close()
+			self.desconectar()
+			print(f"Se ha subido una screenshot de pago para el pedido {id}")
+		except:
+			cursor.close()
+			self.desconectar()
+			raise Exception("Error al mandar la screenshot a la base de datos") 
