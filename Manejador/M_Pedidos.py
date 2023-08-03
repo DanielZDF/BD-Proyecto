@@ -12,16 +12,14 @@ class M_Pedido(Conexion):
             self.conectar()
             cursor = self.conexion_activa.cursor()
             try: # Trata de insertar un cliente
-                query = cursor.execute("INSERT INTO pedido (municipio, ciudad, cant_hamburguesas, m_delivery, m_total, metodo_pago, estado, fecha, cedula_cliente, remarks) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",[municipio, ciudad, n_hamburg, monto_deliv, monto_t, metodo_p, estado_d, fecha, cedula,remarks])
+                cursor.execute("INSERT INTO pedido (municipio, ciudad, cant_hamburguesas, m_delivery, m_total, metodo_pago, estado, fecha, cedula_cliente, remarks) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);",[municipio, ciudad, n_hamburg, monto_deliv, monto_t, metodo_p, estado_d, fecha, cedula,remarks])
                 self.conexion_activa.commit()
                 cursor.close()
                 self.desconectar()
                 print("Insercion exitosa")
-                return query
             except:
                 cursor.close()
                 self.desconectar()
-                raise Exception("Error al insertar un pedido en la base de datos")
 
 	def cambiar_estado_pedido(self,id,estado):
 			self.conectar()
@@ -35,7 +33,6 @@ class M_Pedido(Conexion):
 			except:
 				cursor.close()
 				self.desconectar()
-				raise Exception("Error al insertar un pedido en la base de datos")
 
 	def buscar_pedido(self, id):
            self.conectar()
@@ -50,20 +47,43 @@ class M_Pedido(Conexion):
            except:
                 cursor.close()
                 self.desconectar()
-                raise Exception("Error al buscar un pedido en la base de datos")
 
 	def screenshot(self, id, bytes_imagen):
 		self.conectar()
 		cursor = self.conexion_activa.cursor()
 		try:
-			print(id)
-			print(bytes_imagen)
 			cursor.execute("UPDATE pedido SET screenshot = %s WHERE id = %s",[bytes_imagen, id])
 			self.conexion_activa.commit()
 			cursor.close()
 			self.desconectar()
-			print(f"Se ha subido una screenshot de pago para el pedido {id}")
 		except:
 			cursor.close()
 			self.desconectar()
-			raise Exception("Error al mandar la screenshot a la base de datos") 
+
+	def listar_pedidos(self):
+		self.conectar()
+		cursor = self.conexion_activa.cursor()
+		try:
+			cursor.execute("SELECT * FROM pedido")
+			self.conexion_activa.commit()
+			retornable = cursor.fetchall()
+			cursor.close()
+			self.desconectar()
+			return retornable
+		except:
+			cursor.close()
+			self.desconectar()
+
+	def realizar_query_preconstruida(self, query_sql):
+		self.conectar()
+		cursor = self.conexion_activa.cursor()
+		try:
+			cursor.execute(query_sql)
+			self.conexion_activa.commit()
+			retornable = cursor.fetchall()
+			cursor.close()
+			self.desconectar()
+			return retornable
+		except:
+			cursor.close()
+			self.desconectar()

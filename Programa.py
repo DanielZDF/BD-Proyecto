@@ -12,7 +12,7 @@ def route():
 #-------------------------------------------------
 # SECCION: Manejo de Clientes
 #-------------------------------------------------
-@Dir.route("/customers")
+@Dir.route("/customers", methods = ["GET"])
 def mostrar_clientes():
     cc = M_Clientes.M_Cliente()
     lista_clientes = cc.listar_clientes()
@@ -114,8 +114,48 @@ def pedido_screenshot(id_pedido):
     cc.screenshot(id_pedido,bytes_imagen)
     return '',201
 
-@Dir.route("/orders")
+@Dir.route("/orders", methods = ["GET"])
 def mostrar_pedidos():
+    conexion = M_Pedidos.M_Pedido()
+    retornable = []
+    if (request.args.to_dict() == {}):
+        lista_tuplas = conexion.listar_pedidos()
+    else:
+        dict_args = request.args.to_dict()
+        segmento_where = ""
+        #if 'cedula' in dict_args:
+            #condicion = dict_args['cedula']
+            #segmento_where = segmento_where + "cedula = '" + condicion + "' AND "
+        if 'status' in dict_args:
+            condicion= dict_args['status']
+            segmento_where = segmento_where + "estado = '" + condicion + "' AND "
+        #if 'date' in dict_args:
+            #condicion = dict_args['date']
+            #segmento_where = segmento_where + "fecha = '" + condicion + "' AND "
+        #segmento_where = segmento_where[:-5] + ";"
+        query = f"SELECT * FROM pedido WHERE {segmento_where}"
+        lista_tuplas = conexion.realizar_query_preconstruida(query)
+    if lista_tuplas != []:
+        for tup in lista_tuplas:
+            dict_ped = {}
+            dict_ped['id'] = tup[0]
+            dict_ped['cedula'] = tup[1]
+            dict_ped['quantity'] = tup[2]
+            dict_ped['delivery_amount'] = tup[3]
+            dict_ped['total'] = tup[4]
+            dict_ped['status'] = tup[5]
+            dict_ped['datetime'] = tup[6]
+            dict_ped['payment_method'] = tup[7]
+            screen = tup[8]
+            if screen is not None:
+                dict_ped['screenshot'] = screen.hex()
+            else:
+                dict_ped['screenshot'] = screen
+            dict_ped['municipality'] = tup[9]
+            dict_ped['city'] = tup[10] 
+            dict_ped['remark'] = tup[11]
+            retornable.append(dict_ped)
+    return jsonify(retornable), 200
 
 def pagina_no_encontrada(error):
     return "<h1>Error 404<h2><h2>Página no encontrada</h2>"
