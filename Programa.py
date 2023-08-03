@@ -12,6 +12,16 @@ def route():
 #-------------------------------------------------
 # SECCION: Manejo de Clientes
 #-------------------------------------------------
+
+#>>>>> METODO DE LISTADO DE CLIENTES
+#
+#       URL: http://127.0.0.1:5000/customers
+#       METODO: GET
+#
+#       se toman los datos de cada cliente haciendo un SELECT en la base de datos
+#       una vez se haga, retornará los datos como un diccionario y luego
+#       creara una version JSON del resultado
+#
 @Dir.route("/customers", methods = ["GET"])
 def mostrar_clientes():
     cc = M_Clientes.M_Cliente()
@@ -23,6 +33,15 @@ def mostrar_clientes():
             clientes.append(diccionario_cliente)
     return jsonify(clientes),200
 
+#>>>>> METODO DE INSERCION DE CLIENTES
+#
+#       URL: http://127.0.0.1:5000/customers
+#       METODO: POST
+#
+#       Se lee el archivo JSON descrito en la Request, primero se valida si los datos pueden ser aceptados.
+#       se sabe que puede ser aceptado si contiene todos los campos dentro del JSON, y ademas, si los datos
+#       siguen las reglas de insercion para la Base de Datos
+#
 @Dir.route("/customers", methods = ["POST"])
 def crear_cliente():
     cc = M_Clientes.M_Cliente()
@@ -39,6 +58,15 @@ def crear_cliente():
         print("Error en JSON de entrada")
         abort(400)
 
+#>>>>> METODO DE MODIFICACION DE CLIENTES
+#
+#       URL: http://127.0.0.1:5000/<cedula>
+#       METODO: PUT
+#
+#       Se lee el archivo JSON descrito en la Request, primero se valida si los datos pueden ser aceptados.
+#       se sabe que puede ser aceptado si contiene todos los campos dentro del JSON, y ademas, si los datos
+#       siguen las reglas de insercion para la Base de Datos
+#
 @Dir.route("/customers/<cedula>",methods = ["PUT"])
 def modificar_cliente(cedula):
     cc = M_Clientes.M_Cliente()
@@ -59,6 +87,16 @@ def modificar_cliente(cedula):
 #-------------------------------------------------
 # SECCION: Manejo de Ordenes
 #-------------------------------------------------
+
+#>>>>> METODO DE INSERCION DE ORDENES
+#
+#       URL: http://127.0.0.1:5000/<cedula>
+#       METODO: PUT
+#
+#       Para este metodo, se pide un JSON, este crea su propia SERIAL una vez se insertan los datos en
+#       la Base de Datos, generada automaticamente por esta. Este SERIAL es unico y no se repite, por lo que
+#       las ordenes se identifican por si mismas
+#
 @Dir.route("/orders",methods=["POST"])
 def crear_pedido():
     orden_json = request.get_json()
